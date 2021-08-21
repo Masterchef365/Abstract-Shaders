@@ -1,0 +1,91 @@
+
+// Author:
+// Title:
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+struct Ray {
+	vec3 pos;
+	vec3 dir;
+};
+
+float sum3(vec3 v) { return v.x + v.y + v.z; }
+
+bool quadratic(float a, float b, float c, out float p, out float q) {
+    // Check for solution
+    float g = b * b - 4. * a * c;
+    if (g < 0.) {
+        return false;
+    }
+    
+    // Compute solution 
+	float a2 = 2. * a;
+    float j = -b / a2;
+    float k = sqrt(g) / a2;
+    p = j + k;
+    q = j - k;
+    
+	return true;
+}
+
+bool sphere(inout Ray ray, inout float dist, vec3 pos, float r) {
+    vec3 normal = pos - ray.pos;
+    float a = sum3(ray.dir * ray.dir);// always 1! dot(normal, normal) = 1
+    float b = -2. * sum3(ray.dir * normal);
+    float c = dot(pos, pos) - r * r;
+    
+    float p, q;
+    if (!quadratic(a, b, c, p, q)) {
+        return false;
+    }
+    float t = min(p, q);
+    if (t < dist) {
+        dist = t;
+        ray.pos += ray.dir * t;
+        vec3 incident = normalize(ray.pos- pos);
+        ray.dir = reflect(incident, normal);
+        return true;
+    } else {
+        return false;
+    }
+}
+
+vec3 sample(vec2 pos) {
+    vec2 st = (pos/u_resolution.xy) * 2. - 1.;
+    Ray ray = Ray(vec3(0.750,0.347,0.387), normalize(vec3(st, 1.)));
+    
+    vec3 color = vec3(0.);
+    
+    float dist = 999999999999999.;
+    if (sphere(ray, dist, vec3(vec2(0.160,-0.050), 2.), 1.)) {
+        color = vec3(1.);
+    }
+    //color = vec3(dist);
+    if (ray.dir.y * 9. > cos(atan(ray.dir.x, ray.dir.z) * 99.)) {
+        color = vec3(0.);
+    } else {
+        color = normalize(abs(ray.dir));
+    }
+
+    return color;
+}
+
+void main() {
+    const int AA_DIVS = 0;
+    const int AA_WIDTH = AA_DIVS*2+1;
+    vec3 color = vec3(0.);
+ 	for (int x = -AA_DIVS; x <= AA_DIVS; x++) {
+        for (int y = -AA_DIVS; y <= AA_DIVS; y++) {
+        	vec2 off = vec2(x, y) / float(AA_WIDTH);
+            color += sample(off + gl_FragCoord.xy);
+        }
+    }
+    color /= float(AA_WIDTH*AA_WIDTH);
+    gl_FragColor = vec4(color, 1.);
+}
