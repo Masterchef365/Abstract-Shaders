@@ -15,10 +15,10 @@ const float tau = 2. * pi;
 bool wick(vec2 pos) {
     vec2 st = (pos/u_resolution.xy) * 2. - 1.;
     vec2 q = vec2(0.);
-    for (int i = 0; i < 149; i++) { 
+    for (int i = 0; i < 249; i++) { 
         float m = float(i);
     	q += cos(st * vec2(1. - m, 1.720 * m) + q.yx);
-        q = q + dot(q, vec2(-0.760,0.640));
+        q = q + dot(q, vec2(-0.650,0.570));
         if (abs(q.x) < 0.02 || abs(q.y) < 0.02) return false;
     }
     return true;
@@ -59,7 +59,7 @@ mat2 rot2d(float r) {
 }
 
 vec3 pixel(vec2 p) {
-    vec2 st = (p / u_resolution.xy) * 2. - 1.;
+    vec2 st = (p / min(u_resolution.x, u_resolution.y)) * 2. - 1.;
     vec2 quant = tri_quantize(st, 3.);
     mat2 r = rot2d(quant.x + quant.y);
     return vec3(wick(r * p));
@@ -79,4 +79,6 @@ void main() {
     color /= float(AA_WIDTH*AA_WIDTH);
     gl_FragColor = vec4(color, 1.);
 }
+
+
 

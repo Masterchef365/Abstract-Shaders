@@ -18,7 +18,7 @@ bool wick(vec2 pos) {
     for (int i = 0; i < 149; i++) { 
         float m = float(i);
     	q += cos(st * vec2(1. - m, 1.720 * m) + q.yx);
-        q = q + dot(q, vec2(-0.650,0.570));
+        q = q + dot(q, vec2(-0.650,0.570 + u_time / 10.));
         if (abs(q.x) < 0.02 || abs(q.y) < 0.02) return false;
     }
     return true;

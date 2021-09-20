@@ -9,10 +9,10 @@ uniform vec2 u_resolution;
 uniform vec2 u_mouse;
 uniform float u_time;
 
-vec3 sample(vec2 st) {
+vec3 pixel(vec2 st) {
     st /= u_resolution.xy;
     vec3 q = vec3(0.366,0.426,0.934);
-    float t = cos(u_time / 10.);
+    float t = cos(u_time / 2.);
     for (int i = 0; i < 28; i++) {
         q += cos(
         	q.zxy
@@ -34,7 +34,7 @@ void main() {
  	for (int x = -AA_DIVS; x <= AA_DIVS; x++) {
         for (int y = -AA_DIVS; y <= AA_DIVS; y++) {
         	vec2 off = vec2(x, y) / float(AA_WIDTH);
-            color += sample(off + gl_FragCoord.xy);
+            color += pixel(off + gl_FragCoord.xy);
         }
     }
     color /= float(AA_WIDTH*AA_WIDTH);
