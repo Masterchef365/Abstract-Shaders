@@ -28,9 +28,9 @@ bool rect_prism(vec3 p, vec3 size) {
 
 vec3 sgncolor(float p) {
     if (p >= 0.) {
-        return p * vec3(1., 0.05, 0.05);
+        return p * vec3(0.948,1.000,0.164);
     } else {
-        return -p * vec3(0.05, 0.05, 1.);
+        return -p * vec3(1.000,0.106,0.579);
     }
 }
 
@@ -53,8 +53,8 @@ vec3 shape(vec3 v) {
     bool inside = rect_prism(p, vec3(0.7));    
     //inside = inside && distance(pos + vec3(0.745,0.000,0.000), v) > 0.840;
     vec3 g = p;
-    g.yx *= rot2d(u_time * 2.);
-    g.zx *= rot2d(u_time * 3.);
+    g.yx *= rot2d(u_time / 2.);
+    g.zx *= rot2d(u_time * 2.);
     float density = hydrogen(p - vec3(0.2)) + hydrogen(g + vec3(0.1)) - 3.5;
     vec3 color = sgncolor(density) * vec3(inside) * vec3(0.321,0.504,1.000);
     return color;
@@ -65,7 +65,7 @@ void main() {
 
     const float near = 0.712;
     const float far = 2.800;
-    const int iters = 50;
+    const int iters = 200;
     const float step = (far - near) / float(iters);
     const int brightness = 1;
     
