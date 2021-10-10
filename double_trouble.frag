@@ -61,13 +61,13 @@ vec3 shape(vec3 v) {
 }
 
 void main() {
-    vec2 st = norma(gl_FragCoord.xy/u_resolution.xy);
+    vec2 st = (gl_FragCoord.xy/u_resolution.xy) * 2. - 1.;
+    st.x *= u_resolution.x / u_resolution.y;
 
     const float near = 0.712;
     const float far = 2.800;
     const int iters = 200;
     const float step = (far - near) / float(iters);
-    const int brightness = 1;
     
     vec3 ray = normalize(vec3(st, 1.));
     vec3 pos = ray * near;

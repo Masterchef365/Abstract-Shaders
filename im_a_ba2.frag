@@ -32,7 +32,9 @@ vec3 pixel(vec2 coord) {
         p += q;
         q += p;
     }
-    vec3 color = vec3(dot(p, unit_circ(u_time)) < 0.);
+    
+    float df = dot(normalize(p), unit_circ(u_time));
+    vec3 color = vec3(mix(vec3(1.000,0.328,0.174), vec3(0.328,0.069,0.380), df));
 
     return color;
 }
