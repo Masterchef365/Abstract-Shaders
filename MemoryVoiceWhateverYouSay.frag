@@ -70,9 +70,9 @@ void main() {
     
     // Center thing
     float dist = 1000000.;
-    for (int i = 1; i <= 48; i++) {
-        vec2 a = normalize(rand2d(vec2(i), vec2(-0.560,0.300)));
-    	vec2 pos = rand2d(vec2(i), vec2(-0.430,0.250)) * 2. - 1.;
+    for (int i = 1; i <= 40; i++) {
+        vec2 a = normalize(rand2d(vec2(i), vec2(-0.370,0.520)));
+    	vec2 pos = rand2d(vec2(i), vec2(0.790,-0.680)) * 2. - 1.;
         pos *= vec2(0.500,0.150);
         vec2 off = st * 2. - 1. - pos;
         float k = max(abs(dot(off, a)), abs(cross2d(off, a)));
@@ -80,13 +80,17 @@ void main() {
         //dist = max(dist, k);
     }
     
-    const float thresh = 0.060;
+    const float thresh = 0.068;
     if (dist < thresh) {
         color = mix(
             vec3(0.827,1.000,0.149), 
             vec3(0.169,0.577,0.960), 
             st.x * 3. - 1.208
         );
+
+        float drop_shadow = min(1., 1.688 - dist / thresh);
+        color *= drop_shadow;
+        if (abs(dist - thresh) < 0.001) color = vec3(1.);
     	//color = vec3(dist / 0.068);
     }
 
