@@ -26,9 +26,9 @@ void main() {
     st.x *= u_resolution.x/u_resolution.y;
 
     st += (vec2(
-        rand(st * vec2(-0.710,0.720)) * 100.,
-        rand(st * vec2(0.920,-0.810)) * 100.
-	) * 2. - 1.) * 0.0001;
+        rand(st * vec2(-0.710,0.720)),
+        rand(st * vec2(0.920,-0.810))
+	) * 2. - 1.) * vec2(0.01, 0.005);
         
     vec3 color = vec3(0.);
     const vec2 dir = vec2(0.910,0.630);
@@ -43,7 +43,7 @@ void main() {
 
     float sel = rand(vec2(index) + 0.528) * 0.204 + .1;
     if (stripes < sel) {
-        color = mix(color, vec3(1.), pow(fract(grad_x * 4.928), 2.) * 3.);
+        color = mix(color, vec3(1.), pow(fract(-grad_x * 6.112), 1.376) * 1.984);
     }
 
     gl_FragColor = vec4(color,1.0);
