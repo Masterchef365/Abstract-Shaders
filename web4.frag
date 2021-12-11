@@ -28,9 +28,12 @@ vec3 pixel(vec2 coord) {
 
     st *= 1.;
     
+    mat2 am = rot2d(pi / 4.);
+    mat2 bm = rot2d(-3. * pi / 4. + u_time / 50.);
+    
     for (int i = 0; i < 4; i++) {
-    	vec2 a = rot2d(pi / 4.) * st;
-		vec2 b = rot2d(-3. * pi / 4. + u_time / 50.) * st;
+    	vec2 a = am * st;
+		vec2 b = bm * st;
 
         st = vec2(
             cos(a.x * freq) * a.y,
