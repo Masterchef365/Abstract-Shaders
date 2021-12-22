@@ -27,7 +27,7 @@ void main() {
     vec2 st = (gl_FragCoord.xy/u_resolution.xy) * 2. - 1.;
     st.x *= u_resolution.x/u_resolution.y;
     
-    st.x += 1.748;
+    st.x += 0.5;
  
     // Wall
     bool in_wall = abs(st.x) < wall_width;
