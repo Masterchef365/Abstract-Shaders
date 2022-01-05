@@ -39,9 +39,9 @@ void main() {
     bool circ_in_bound = cmax(abs(st * 2.)) < bound_thresh;
     bool line_in_bound = cmax(abs(st * 2.) + .5) < bound_thresh;
     
-    color = mix(vec3(!checker(fract(st + .25))), vec3(.5), 0.540);
-    if (circ && circ_in_bound) color = vec3(!checker(fract(abs(st))));
-    if (line && line_in_bound) color = vec3((0.462));
+    color = mix(vec3(checker(fract(st + .25))), vec3(.5), 0.540);
+    if (circ && circ_in_bound) color = vec3(checker(fract(abs(st))));
+    if (line && line_in_bound) color = vec3((0.540));
     
     
 
