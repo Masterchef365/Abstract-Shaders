@@ -14,12 +14,9 @@ const vec2 a = vec2(1., 0.);
 const vec2 b = vec2(cos(pi / 3.), sin(pi / 3.));
 const vec2 c = vec2(cos(2. * pi / 3.), sin(2. * pi / 3.));
 
-float PHI = 1.61803398874989484820459;  // Φ = Golden Ratio   
-
-float gold_noise(in vec2 xy, in float seed){
-       return fract(tan(distance(xy*PHI, xy)*seed)*xy.x);
+float rand(in vec2 co, in float seed){
+    return fract(sin(dot(co * seed, vec2(12.9898, 78.233))) * 43758.5453);
 }
-
 
 vec3 to_threespace(vec2 st) {
     return vec3(
@@ -45,9 +42,9 @@ vec3 pixel(vec2 coord) {
     vec3 ts = to_threespace(st);
     
     vec2 sample_coord; 
-    const int layers = 6;
+    const int layers = 8;
     float quant = 2.;
-    const float p = 2. / float(layers);
+    const float p = 3. / float(layers);
     
     float j = 0.104;
     for (int layer = 0; layer < layers; layer++) {
@@ -58,15 +55,15 @@ vec3 pixel(vec2 coord) {
             quant_v
         );
         
-        if (gold_noise(sample_coord * u_resolution.xy + 12.608, 99.712) < p) {
+        if (rand(sample_coord * u_resolution.xy + 12.608, 99.712) < p) {
             break;
         }
         j += 1.244 / float(layers);
     }
     
     vec2 off = vec2(
-        gold_noise(sample_coord * u_resolution.xy + 12.608, 99.712),
-        gold_noise(sample_coord * u_resolution.xy + 13.736, 98.016)
+        rand(sample_coord * u_resolution.xy + 12.608, 99.712),
+        rand(sample_coord * u_resolution.xy + 13.736, 98.016)
     ) * 2. - 1.;
     
     sample_coord += off * -0.280;
