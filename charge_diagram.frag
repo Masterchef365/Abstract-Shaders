@@ -11,9 +11,9 @@ uniform float u_time;
 
 vec3 sgncolor(float x) {
     if (x > 0.) {
-        return x * vec3(1., 0.1, 0.1);
+        return x * vec3(1.000,0.312,0.051);
     } else {
-        return -x * vec3(0.1, 0.1, 1.);
+        return -x * vec3(0.046,0.440,1.000);
     }
 }
 
@@ -21,19 +21,19 @@ vec3 pixel(vec2 coord) {
     vec2 st = (coord/u_resolution.xy) * 2. - 1.;
     st.x *= u_resolution.x/u_resolution.y;
 
-    float d = 0.348;
+    float d = 0.300;
     vec2 q1p = vec2(-d, 0.);
     vec2 q2p = vec2(d, 0.);
     float q1 = 2.;
-    float q2 = -0.888;
+    float q2 = -1.;
     
     float q1d = distance(st, q1p);
     float q2d = distance(st, q2p);
     
     float q = q1/q1d + q2/q2d;
     
-    vec3 color = sgncolor(q * 1.278);
-    if (abs(q) < 0.01) color = vec3(0.409,1.000,0.204);
+    vec3 color = sgncolor(q * 0.470);
+    if (abs(q) < 0.01) color = vec3(0.271,1.000,0.086);
 
     return color;
 }
