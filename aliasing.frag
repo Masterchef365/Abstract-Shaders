@@ -13,7 +13,8 @@ uniform float u_time;
 vec3 pixel(vec2 coord) {
     vec2 st = (coord/min(u_resolution.x, u_resolution.y)) * 2. - 1.;
 
-    float j = pow(fract(u_time / 200.) * 18., 2.) + 10.;
+    float anim = abs(fract(u_time / 200.) - .5) * 2.;
+    float j = pow(anim * 18., 2.) + 10.;
     st = floor(st * j) / j;
     
     float k = 2.552;
