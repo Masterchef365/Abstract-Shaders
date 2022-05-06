@@ -15,7 +15,7 @@ vec3 pixel(vec2 coord) {
     vec2 st = (coord/u_resolution.xy) * vec2(1./2., 2.) - vec2(0., 1.);
     st.x *= u_resolution.x/u_resolution.y;
     
-    st.y *= 1.680;
+    st.y *= 3.;
 
     vec3 color = vec3(0.);
     
@@ -25,13 +25,13 @@ vec3 pixel(vec2 coord) {
     
     float f = 0.;
     
-    for (int i = 3; i <= 3; i++) {
-    //int i = 1;
+    for (int i = 2; i <= 8; i++) {
+    	//int i = 1;
         float k = pi * float(i);
         float w = 1.;
         float phi = 1.;
 
-        f += sin(k * st.x) * sin(u_time);
+        f += sin(k * st.x) * sin(k * u_time / 10.);
     }
     
     color = vec3(f < st.y);
