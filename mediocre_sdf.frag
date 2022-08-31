@@ -1,3 +1,4 @@
+
 // ------- SNIP HERE --------
 
 #ifdef GL_ES
@@ -7,6 +8,7 @@ precision mediump float;
 uniform vec2 u_resolution;
 uniform vec2 u_mouse;
 uniform float u_time;
+//float u_time = 10. * 2.776;
 
 const int MAT_BACKGND = 0;
 const int MAT_FLOOR = 1;
@@ -26,7 +28,7 @@ Sdf s_diff(Sdf a, Sdf b);
 Sdf sphere(vec3 p, vec3 o, float r, int mat);
 
 const int MAX_ITERATIONS = 100;
-const float omega_init = 1.2;
+const float omega_init = 1.1;
 
 vec3 o = vec3(u_time / 10., 0.948, (0));
 const float fov = 1.;
@@ -79,7 +81,9 @@ vec3 f_color(Sdf sdf, vec3 end) {
     } else if (sdf.mat == MAT_SPHERE) {
 		return vec3(1.);
     } else if (sdf.mat == MAT_SPHERE2) {
-		return vec3(fract(dot(end, vec3(0.955,0.270,0.399)) * 20.));
+        float j = dot(end, vec3(0.955,0.270,0.399));
+		return vec3(fract(j * 20.))
+            * mix(vec3(1.000,0.886,0.218), vec3(0.519,0.834,1.000), cos(j * 2.));
     } else if (sdf.mat == MAT_FLOOR) {
 		return vec3(fract(end.xz), 0);
     }
@@ -135,9 +139,6 @@ Sdf raycast(float t_min, float t_max, vec3 o, vec3 d, float pixelRadius) {
         return Sdf(MAT_BACKGND, INFINITY);
     } else {
         t = candidate_t;
-        for (int i = 0; i < 3; i++) {
-            t += f(d*t + o).dist;
-        }
         return Sdf(sdf.mat, t);
     }
 }
@@ -178,7 +179,7 @@ vec3 px_sample(vec2 coord) {
     
     d.xz *= rot2(u_time / 30.);
     
-    float pixelRadius = 2. / u_resolution.x / fov;
+    float pixelRadius = 0.5 / u_resolution.x / fov;
     
     Sdf sdf = raycast(t_min, t_max, o, d, pixelRadius);
 	vec3 end = d * sdf.dist + o;
