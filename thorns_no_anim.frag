@@ -142,7 +142,7 @@ vec3 pixel(vec2 coord) {
 }
 
 void main() {
-    const int AA_DIVS = 0;
+    const int AA_DIVS = 3;
     const int AA_WIDTH = AA_DIVS*2+1;
     vec3 color = vec3(0.);
  	for (int x = -AA_DIVS; x <= AA_DIVS; x++) {
